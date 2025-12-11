@@ -14,7 +14,7 @@ const Index = () => {
         <header className="text-center mb-8 slide-up" style={{
         animationDelay: "0.1s"
       }}>
-          <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground font-body mb-3">MID-CENTURY MODULAR</p>
+          <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground font-body mb-3">MIDCENTURY MODULAR</p>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-light text-foreground tracking-tight">
             Barcelona Chair
           </h1>

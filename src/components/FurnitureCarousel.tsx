@@ -8,6 +8,7 @@ import {
 
 import barcelonaChair from "@/assets/barcelona-chair-illustration.png";
 import poulsenLamp from "@/assets/poulsen-lamp-illustration.png";
+import eamesLounge from "@/assets/eames-lounge-illustration.png";
 
 interface FurnitureSlide {
   image: string;
@@ -34,6 +35,14 @@ const slides: FurnitureSlide[] = [
     designer: "Poul Henningsen",
     year: "1958",
     quote: "Light should be gentle",
+  },
+  {
+    image: eamesLounge,
+    title: "Eames Lounge Chair",
+    alt: "Eames Lounge Chair assembly diagram - exploded view showing molded plywood shells, leather cushions, and aluminum base in Portal game instructional style",
+    designer: "Charles & Ray Eames",
+    year: "1956",
+    quote: "The details are not the details",
   },
 ];
 

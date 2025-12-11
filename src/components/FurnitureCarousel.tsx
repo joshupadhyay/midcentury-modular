@@ -80,7 +80,7 @@ export const FurnitureCarousel = () => {
           IKEA perfected the flatpack furniture. Why can't we apply it to most everything else?
         </p>
         <p className="text-muted-foreground font-body text-sm md:text-base max-w-2xl mx-auto mb-4">
-          Upload photos of a piece of furniture you love, a web link, and some dimensions. We'll give you CNC blueprints to cut it out and assemble it on your own.
+          Upload photos of a piece of furniture you love, a web link, and some dimensions. We'll give you CNC blueprints to cut and assemble on your own.
         </p>
         <h1 className="md:text-5xl lg:text-6xl font-display font-light text-foreground tracking-tight transition-all duration-500 text-2xl">
           {currentSlide.title}

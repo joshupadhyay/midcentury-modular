@@ -91,11 +91,11 @@ export const FurnitureCarousel = () => {
           {slides.map((slide, index) => (
             <CarouselItem key={index}>
               <figure className="relative">
-                <div className="relative overflow-hidden rounded-sm shadow-elegant">
+                <div className="relative overflow-hidden rounded-sm shadow-elegant aspect-[16/9]">
                   <img
                     src={slide.image}
                     alt={slide.alt}
-                    className="w-full h-auto object-contain"
+                    className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/5 to-transparent pointer-events-none" />
                 </div>

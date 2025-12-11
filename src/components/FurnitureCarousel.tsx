@@ -76,7 +76,7 @@ export const FurnitureCarousel = () => {
         <p className="tracking-[0.3em] uppercase text-muted-foreground font-body mb-3 text-3xl font-normal">
           MIDCENTURY MODULAR
         </p>
-        <h1 className="md:text-5xl lg:text-6xl font-display font-light text-foreground tracking-tight transition-all duration-500 text-xl">
+        <h1 className="md:text-5xl lg:text-6xl font-display font-light text-foreground tracking-tight transition-all duration-500 text-2xl">
           {currentSlide.title}
         </h1>
       </header>

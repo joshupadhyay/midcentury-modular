@@ -102,19 +102,16 @@ export const FurnitureCarousel = () => {
       </Carousel>
 
       {/* Dots indicator */}
-      <div className="flex justify-center gap-2 mt-6">
+      <div className="flex justify-center gap-2 mt-4">
         {slides.map((_, index) => <button key={index} onClick={() => api?.scrollTo(index)} className={`w-2 h-2 rounded-full transition-all duration-300 ${index === current ? "bg-foreground w-6" : "bg-muted-foreground/30 hover:bg-muted-foreground/50"}`} aria-label={`Go to slide ${index + 1}`} />)}
       </div>
 
-      {/* Footer attribution */}
-      <footer className="mt-10 text-center slide-up" style={{
-      animationDelay: "0.5s",
-      animationFillMode: "both"
-    }}>
+      {/* Footer attribution - compressed */}
+      <footer className="mt-4 text-center">
         <p className="text-xs tracking-widest uppercase text-muted-foreground/70 font-body transition-all duration-500">
           {currentSlide.designer} · {currentSlide.year}
         </p>
-        <p className="mt-2 text-sm text-muted-foreground font-display italic transition-all duration-500">
+        <p className="mt-1 text-sm text-muted-foreground font-display italic transition-all duration-500">
           "{currentSlide.quote}"
         </p>
       </footer>

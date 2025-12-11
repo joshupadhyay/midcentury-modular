@@ -37,14 +37,32 @@ const slides: FurnitureSlide[] = [
   },
 ];
 
+const randomInRange = (min: number, max: number) => {
+  return Math.random() * (max - min) + min;
+};
+
 export const FurnitureCarousel = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
+  const [isReady, setIsReady] = useState(false);
 
   const onSelect = useCallback(() => {
     if (!api) return;
     setCurrent(api.selectedScrollSnap());
   }, [api]);
+
+  // Breathing cycle for organic auto-advance
+  useEffect(() => {
+    if (!api || !isReady) return;
+
+    const duration = randomInRange(5500, 7000); // Organic timing variation
+    
+    const timeout = setTimeout(() => {
+      api.scrollNext();
+    }, duration);
+
+    return () => clearTimeout(timeout);
+  }, [api, current, isReady]);
 
   useEffect(() => {
     if (!api) return;
@@ -52,14 +70,12 @@ export const FurnitureCarousel = () => {
     onSelect();
     api.on("select", onSelect);
     
-    // Auto-slide every 6 seconds
-    const interval = setInterval(() => {
-      api.scrollNext();
-    }, 6000);
+    // Small delay before starting auto-advance
+    const startTimeout = setTimeout(() => setIsReady(true), 1000);
 
     return () => {
       api.off("select", onSelect);
-      clearInterval(interval);
+      clearTimeout(startTimeout);
     };
   }, [api, onSelect]);
 
@@ -83,6 +99,7 @@ export const FurnitureCarousel = () => {
         opts={{
           align: "center",
           loop: true,
+          duration: 45, // Slower, smoother transition
         }}
         className="w-full max-w-5xl mx-auto fade-in"
         style={{ animationDelay: "0.3s" }}

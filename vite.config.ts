@@ -8,6 +8,14 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    proxy: {
+      "/ingest": {
+        target: "https://us.i.posthog.com",
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/ingest/, ""),
+      },
+    },
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {

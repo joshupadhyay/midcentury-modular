@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { Upload, X, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { posthog } from "posthog-js";
 
 interface UploadedImage {
   id: string;
@@ -14,23 +15,32 @@ export const FurnitureUpload = () => {
 
   const handleFiles = useCallback((files: FileList | null) => {
     if (!files) return;
-    
+
     const newImages: UploadedImage[] = Array.from(files)
-      .filter(file => file.type.startsWith("image/"))
-      .map(file => ({
+      .filter((file) => file.type.startsWith("image/"))
+      .map((file) => ({
         id: crypto.randomUUID(),
         file,
         preview: URL.createObjectURL(file),
       }));
-    
-    setImages(prev => [...prev, ...newImages]);
+
+    if (newImages.length > 0) {
+      posthog.capture("Upload click!", {
+        imageCount: newImages.length,
+      });
+    }
+
+    setImages((prev) => [...prev, ...newImages]);
   }, []);
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    handleFiles(e.dataTransfer.files);
-  }, [handleFiles]);
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setIsDragging(false);
+      handleFiles(e.dataTransfer.files);
+    },
+    [handleFiles]
+  );
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -43,15 +53,18 @@ export const FurnitureUpload = () => {
   }, []);
 
   const removeImage = useCallback((id: string) => {
-    setImages(prev => {
-      const image = prev.find(img => img.id === id);
+    setImages((prev) => {
+      const image = prev.find((img) => img.id === id);
       if (image) URL.revokeObjectURL(image.preview);
-      return prev.filter(img => img.id !== id);
+      return prev.filter((img) => img.id !== id);
     });
   }, []);
 
   return (
-    <section className="w-full max-w-3xl mx-auto slide-up" style={{ animationDelay: "0.7s" }}>
+    <section
+      className="w-full max-w-3xl mx-auto slide-up"
+      style={{ animationDelay: "0.7s" }}
+    >
       <div className="text-center mb-6">
         <h2 className="text-2xl md:text-3xl font-display font-light text-foreground mb-2">
           Upload Your Piece
@@ -69,9 +82,10 @@ export const FurnitureUpload = () => {
         className={`
           relative border-2 border-dashed rounded-sm p-8 md:p-12 text-center
           transition-all duration-300 cursor-pointer
-          ${isDragging 
-            ? "border-primary bg-primary/5" 
-            : "border-border hover:border-muted-foreground/50 hover:bg-muted/30"
+          ${
+            isDragging
+              ? "border-primary bg-primary/5"
+              : "border-border hover:border-muted-foreground/50 hover:bg-muted/30"
           }
         `}
       >
@@ -82,12 +96,18 @@ export const FurnitureUpload = () => {
           onChange={(e) => handleFiles(e.target.files)}
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
         />
-        
+
         <div className="flex flex-col items-center gap-3">
-          <div className={`
+          <div
+            className={`
             p-4 rounded-full transition-colors duration-300
-            ${isDragging ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}
-          `}>
+            ${
+              isDragging
+                ? "bg-primary/10 text-primary"
+                : "bg-muted text-muted-foreground"
+            }
+          `}
+          >
             <Upload className="w-6 h-6" />
           </div>
           <div>
@@ -105,8 +125,8 @@ export const FurnitureUpload = () => {
       {images.length > 0 && (
         <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
           {images.map((image) => (
-            <div 
-              key={image.id} 
+            <div
+              key={image.id}
               className="relative group aspect-square rounded-sm overflow-hidden bg-muted shadow-soft"
             >
               <img
@@ -115,7 +135,9 @@ export const FurnitureUpload = () => {
                 className="w-full h-full object-cover"
               />
               <button
-                onClick={() => removeImage(image.id)}
+                onClick={() => {
+                  removeImage(image.id);
+                }}
                 className="
                   absolute top-2 right-2 p-1.5 rounded-full
                   bg-background/80 text-foreground
@@ -135,10 +157,7 @@ export const FurnitureUpload = () => {
       {/* Action button */}
       {images.length > 0 && (
         <div className="mt-6 text-center">
-          <Button 
-            size="lg"
-            className="font-display tracking-wide"
-          >
+          <Button size="lg" className="font-display tracking-wide">
             <ImageIcon className="w-4 h-4 mr-2" />
             Analyze {images.length} {images.length === 1 ? "Photo" : "Photos"}
           </Button>
